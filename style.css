@@ -237,3 +237,202 @@ main {
   color: #777;
   margin-bottom: 4em;
 }
+
+
+/* =========================
+   WORKS
+   ========================= */
+
+/* WORKS一覧：3列アイコン */
+.works-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 10px;
+}
+
+/* 画面が狭いときは自然に2列→1列 */
+@media (max-width: 720px){
+  .works-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 420px){
+  .works-grid{ grid-template-columns: 1fr; }
+}
+
+.work-icon{
+  display: block;
+  aspect-ratio: 1 / 1;          /* 四角 */
+  overflow: hidden;
+  text-decoration: none;
+  border: 1px solid #eee;
+  background: #fafafa;
+}
+
+.work-icon img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;            /* 四角にトリミングして“象徴画像”に */
+  display: block;
+}
+
+/* 作品ページ：セクション見出し */
+.work-block{
+  margin-bottom: 3.2em;
+}
+.work-block-title{
+  font-size: 13px;
+  color: #777;
+  margin: 0 0 0.9em;
+}
+
+/* Carousel（左右スワイプ + 矢印） */
+.carousel{
+  position: relative;
+}
+
+/* 横スクロール本体 */
+.carousel-track{
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: 12px;
+
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  /* スクロールバーを目立たせない */
+  scrollbar-width: none;
+}
+.carousel-track::-webkit-scrollbar{
+  display: none;
+}
+
+.carousel-item{
+  scroll-snap-align: start;
+  margin: 0;
+  
+  background: #fff;
+}
+
+/* 画像は“1枚ずつ”見える */
+.carousel-item img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 左右の矢印（半透明で控えめ） */
+.carousel-btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: auto;
+  height: auto;
+
+  background: none;
+  border: none;
+  border-radius: 0;
+
+  color: rgba(0,0,0,0.35);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.carousel-btn:hover{
+  color: rgba(0,0,0,0.6);
+}
+
+
+.carousel-btn.prev{ left: 20px; }
+.carousel-btn.next{ right: 20px; }
+
+/* テキスト部分 */
+.work-text{
+  margin-top: 4em;
+}
+.work-text-title{
+  font-size: 13px;
+  color: #777;
+  margin: 0 0 1em;
+}
+.work-meta{
+  font-size: 13px;
+  color: #777;
+  margin-top: 1.5em;
+}
+
+.carousel-item {
+  aspect-ratio: 3 / 2;   /* 枠は固定 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff; /* ← ここを白に */
+}
+
+.carousel-item img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;   /* 全体表示 */
+}
+
+/* ===== WORKS: カルーセルのドット ===== */
+.carousel-dots{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  user-select: none;
+}
+
+.carousel-dot{
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.18); /* 薄い */
+}
+
+.carousel-dot.is-active{
+  background: rgba(0,0,0,0.55); /* 濃い */
+}
+
+/* ===== WORKS：写真＋図面を横並びでフル幅 ===== */
+
+/* 通常（縦並び・720px） */
+.work-split{
+  display: block;
+}
+
+/* 横画面・大きな画面で発動 */
+@media (min-width: 960px){
+
+  /* main の幅制限を一時的に解除 */
+  .work-split.is-fullwidth{
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+
+    width: 100vw;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* 中身を2カラムで横並び */
+  .work-split.is-fullwidth{
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 写真＝図面 */
+    gap: 28px;
+    align-items: start;
+  }
+
+  /* 縦並び前提の余白を消す */
+  .work-split.is-fullwidth .work-block{
+    margin-bottom: 0;
+  }
+}
