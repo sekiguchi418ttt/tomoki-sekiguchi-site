@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ゴミの家</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="../index.html">Tomoki Sekiguchi</a>
+    <div class="tabs">
+      <a href="../index.html" class="tab">TEXT</a>
+      <a href="../works.html" class="tab active">WORKS</a>
+      <a href="../contact.html" class="tab">CONTACT</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <h1>ゴミの家</h1>
+  <p class="subtitle">2023</p>
+</header>
+
+<main>
+
+  <!-- 上：写真（横スワイプ + 矢印） -->
+
+<div class="work-split is-fullwidth">
+ <section class="work-block work-photos">
+  
+
+    <div class="carousel" data-carousel>
+      <button class="carousel-btn prev" type="button" aria-label="前の写真へ">‹</button>
+
+      <div class="carousel-track" tabindex="0" aria-label="写真ギャラリー（左右にスクロール）">
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/photos/01.png" alt="写真 1">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/photos/02.png" alt="写真 2">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/photos/03.png" alt="写真 3">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/photos/04.png" alt="写真 4">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/photos/05.png" alt="写真 5">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/photos/06.png" alt="写真 6">
+        </figure>
+
+      </div>
+
+      <button class="carousel-btn next" type="button" aria-label="次の写真へ">›</button>
+
+      <div class="carousel-dots" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- 下：図面・ドローイング等（横スワイプ + 矢印） -->
+  <section class="work-block work-docs">
+    
+
+    <div class="carousel" data-carousel>
+      <button class="carousel-btn prev" type="button" aria-label="前の資料へ">‹</button>
+
+      <div class="carousel-track" tabindex="0" aria-label="資料ギャラリー（左右にスクロール）">
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/docs/01.png" alt="資料 1">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/docs/02.png" alt="資料 2">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/docs/03.png" alt="資料 3">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/docs/04.png" alt="資料 4">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/docs/05.png" alt="資料 5">
+        </figure>
+        <figure class="carousel-item">
+          <img src="../images/works/hirata_studio/docs/06.png" alt="資料 6">
+        </figure>
+
+
+      </div>
+
+      <button class="carousel-btn next" type="button" aria-label="次の資料へ">›</button>
+
+      <div class="carousel-dots" aria-hidden="true"></div>
+    </div>
+  </section>
+</div>
+
+  <!-- テキスト -->
+  <section class="work-text">
+  
+    <p>
+
+
+    </p>
+
+    <p class="work-meta">
+      DATE: 2023.06<br>
+      DESIGN_ Tomoki Sekiguchi<br>
+      TEXT_ Tomoki Sekiguchi<br>
+
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p>© Tomoki Sekiguchi</p>
+</footer>
+
+<!-- 最小JS：矢印クリックで「1枚分」スクロール -->
+<script>
+(function () {
+  const carousels = document.querySelectorAll('[data-carousel]');
+
+  function clampIndex(i, n){
+    return ((i % n) + n) % n;
+  }
+
+  carousels.forEach(carousel => {
+    const track = carousel.querySelector('.carousel-track');
+    const prev = carousel.querySelector('.carousel-btn.prev');
+    const next = carousel.querySelector('.carousel-btn.next');
+    const dotsWrap = carousel.querySelector('.carousel-dots');
+
+    if (!track) return;
+
+    // 元のアイテム（クローン追加前）
+    let items = Array.from(track.children);
+    if (items.length < 1) return;
+
+    const originalCount = items.length;
+
+    // ドットを生成（写真/資料それぞれの枚数分）
+    if (dotsWrap) {
+      dotsWrap.innerHTML = '';
+      for (let i = 0; i < originalCount; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'carousel-dot';
+        dotsWrap.appendChild(dot);
+      }
+    }
+
+    function getGap() {
+      const cs = getComputedStyle(track);
+      const g = parseFloat(cs.gap || cs.columnGap || 0);
+      return isNaN(g) ? 0 : g;
+    }
+
+    function getItemWidth() {
+      const item = track.querySelector('.carousel-item');
+      if (!item) return 0;
+      return item.getBoundingClientRect().width + getGap();
+    }
+
+    // 先頭末尾を複製して無限ループ化
+    const firstClone = items[0].cloneNode(true);
+    const lastClone  = items[items.length - 1].cloneNode(true);
+    track.insertBefore(lastClone, items[0]);
+    track.appendChild(firstClone);
+
+    // 初期位置を「本物の1枚目」に
+    function snapToFirst(){
+      const w = getItemWidth();
+      if (!w) return;
+      track.scrollLeft = w;
+    }
+    snapToFirst();
+
+    // 現在インデックス（ドット用）を計算して更新
+    function updateDots() {
+      if (!dotsWrap) return;
+      const w = getItemWidth();
+      if (!w) return;
+
+      // scrollLeft= w が「1枚目」。そこからの相対で計算
+      const raw = Math.round(track.scrollLeft / w) - 1; // 0-based（本物の1枚目が0）
+      const idx = clampIndex(raw, originalCount);
+
+      const dots = Array.from(dotsWrap.children);
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+    }
+
+    updateDots();
+
+    // ボタンで1枚ずつ
+    function scrollByItem(dir) {
+      const w = getItemWidth();
+      if (!w) return;
+      track.scrollBy({ left: dir * w, behavior: 'smooth' });
+    }
+
+    if (prev) prev.addEventListener('click', () => scrollByItem(-1));
+    if (next) next.addEventListener('click', () => scrollByItem(1));
+
+    // スクロール補正（端に入ったら不可視で位置調整）＋ドット更新
+    let ticking = false;
+
+    track.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const w = getItemWidth();
+        if (w) {
+          const max = w * (originalCount + 1);
+
+          if (track.scrollLeft <= 0) {
+            track.scrollLeft = w * originalCount;
+          } else if (track.scrollLeft >= max) {
+            track.scrollLeft = w;
+          }
+        }
+
+        updateDots();
+        ticking = false;
+      });
+    });
+
+    // リサイズで幅が変わるので、位置とドットを補正
+    window.addEventListener('resize', () => {
+      snapToFirst();
+      updateDots();
+    });
+  });
+})();
+</script>
+
+
+
+</body>
+</html>
