@@ -436,3 +436,33 @@ main {
     margin-bottom: 0;
   }
 }
+
+/* ===== iPhone等（タッチ端末/小画面）だけ最適化 ===== */
+@media (max-width: 600px), (hover: none) and (pointer: coarse){
+
+  /* 1枚の“表示枠”の高さを決める：縦長がデカく見えすぎるのを防ぐ */
+  .carousel-item{
+    aspect-ratio: auto;          /* iPhoneでは固定比率を外す */
+    height: 58vh;                /* ← 好みで調整（50〜65vhくらいが安定） */
+    max-height: 420px;           /* 極端な端末でも暴れない上限 */
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  /* 画像は必ず枠内に収める（縦長でも巨大化しない） */
+  .carousel-item img{
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain;
+  }
+
+  /* スクロール表示の安定（iPhoneで“中央に揃ってない感”を減らす） */
+  .carousel-track{
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 0px;
+    scroll-padding-right: 0px;
+  }
+}
+
